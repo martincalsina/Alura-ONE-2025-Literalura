@@ -1,13 +1,15 @@
 package com.martin.literalura.principal;
 
+import com.martin.literalura.model.DatosLibro;
 import com.martin.literalura.model.Libro;
 import com.martin.literalura.model.PaginaDeLibros;
 import com.martin.literalura.service.ConsultasAPILibros;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class MenuLibros {
 
+    private Set<Libro> librosRegistrados = new HashSet<>();
     private ConsultasAPILibros consultaAPI = new ConsultasAPILibros();
     private final String menuPrincipalOpciones = """
                     1 - Buscar libro por título.
@@ -52,6 +54,7 @@ public class MenuLibros {
                 this.buscarLibroPorTitulo();
                 break;
             case 2:
+                this.listarLibrosRegistrados();
                 break;
             case 3:
                 break;
@@ -68,19 +71,27 @@ public class MenuLibros {
         String titulo = lectura.nextLine();
         System.out.println("Buscando libro con el título '" + titulo + "'");
         PaginaDeLibros paginaDeLibros = consultaAPI.getBookPageByName(titulo);
-        if (paginaDeLibros.libros().isEmpty()) {
+        if (paginaDeLibros.datosLibros().isEmpty()) {
             System.out.println("No se encontraron libros con ese título");
         } else {
+            DatosLibro datosLibro = paginaDeLibros.datosLibros().get(0);
+            Libro libro = new Libro(datosLibro);
             System.out.println("Encontramos el siguiente libro:");
-            this.imprimirLibro(paginaDeLibros.libros().get(0));
+            System.out.println(libro);
+            if (!librosRegistrados.contains(libro)) {
+                System.out.println("Registrando libro");
+                this.librosRegistrados.add(libro);
+            }
         }
     }
 
-    private void imprimirLibro(Libro libro) {
-        System.out.println("Título: " + libro.titulo());
-        System.out.println("Autor: " + libro.autores().get(0).nombre());
-        System.out.println("Resumen: " + libro.resumenes().get(0));
-        System.out.println("Idioma: " + libro.idiomas().get(0));
+    private void listarLibrosRegistrados() {
+        System.out.println("Listando libros registrados");
+        System.out.println("--------------------------------");
+        for(Libro libro: this.librosRegistrados) {
+            System.out.println(libro);
+        }
+        System.out.println("--------------------------------");
     }
 
 }

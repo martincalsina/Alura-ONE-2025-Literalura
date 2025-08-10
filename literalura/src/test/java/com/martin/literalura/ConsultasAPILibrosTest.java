@@ -1,6 +1,6 @@
 package com.martin.literalura;
 
-import com.martin.literalura.model.Libro;
+import com.martin.literalura.model.DatosLibro;
 import com.martin.literalura.model.PaginaDeLibros;
 import com.martin.literalura.service.ConsultasAPILibros;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class ConsultasAPILibrosTest {
         assertTrue(paginaDeLibros.cantidad() > 0, "La página de libros default no debe ser vacía");
         assertFalse(paginaDeLibros.siguientePagina().isBlank(), "La página de libros default debe tener siguiente página");
         assertNull(paginaDeLibros.anteriorPagina(), "La página de libros default no tiene anterior página");
-        assertFalse(paginaDeLibros.libros().isEmpty(), "La lista de libros no debería estar vacía");
+        assertFalse(paginaDeLibros.datosLibros().isEmpty(), "La lista de libros no debería estar vacía");
 
     }
 
@@ -32,13 +32,13 @@ public class ConsultasAPILibrosTest {
     void test02AllBooksRequestListOfBooksReturnsBooks() {
 
         PaginaDeLibros paginaDeLIbros = consultasAPI.getAllBooksPage();
-        List<Libro> libros = paginaDeLIbros.libros();
-        Libro libro = libros.get(0);
+        List<DatosLibro> datosLibros = paginaDeLIbros.datosLibros();
+        DatosLibro datosLibro = datosLibros.get(0);
 
-        assertNotNull(libro.id(), "El id de un libro no puede ser nulo");
-        assertFalse(libro.titulo().isBlank(), "Un libro debe tener título");
-        assertFalse(libro.autores().isEmpty(), "Un libro debe tener al menos un autor");
-        assertFalse(libro.resumenes().isEmpty(), "Un libro debe tener al menos un resumen");
+        assertNotNull(datosLibro.id(), "El id de un libro no puede ser nulo");
+        assertFalse(datosLibro.titulo().isBlank(), "Un libro debe tener título");
+        assertFalse(datosLibro.autores().isEmpty(), "Un libro debe tener al menos un autor");
+        assertFalse(datosLibro.resumenes().isEmpty(), "Un libro debe tener al menos un resumen");
 
     }
 
@@ -52,7 +52,7 @@ public class ConsultasAPILibrosTest {
         assertEquals(0, (int) paginaDeLibros.cantidad(), "Deberían haberse hallado 0 libros");
         assertNull(paginaDeLibros.siguientePagina(), "No debería haber siguiente página");
         assertNull(paginaDeLibros.anteriorPagina(), "No debería haber anterior página");
-        assertTrue(paginaDeLibros.libros().isEmpty(), "No debería haberse recibido ningún libro");
+        assertTrue(paginaDeLibros.datosLibros().isEmpty(), "No debería haberse recibido ningún libro");
 
     }
 
@@ -66,7 +66,7 @@ public class ConsultasAPILibrosTest {
         assertNotNull(paginaDeLibros);
         assertTrue(paginaDeLibros.cantidad() > 0, "Deberían haberse hallado al menos un libro");
         assertNull(paginaDeLibros.anteriorPagina(), "No debería haber anterior página");
-        assertFalse(paginaDeLibros.libros().isEmpty(), "Debería haberse recibido al menos un libro");
+        assertFalse(paginaDeLibros.datosLibros().isEmpty(), "Debería haberse recibido al menos un libro");
 
     }
 

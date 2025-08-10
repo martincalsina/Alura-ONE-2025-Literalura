@@ -1,16 +1,31 @@
 package com.martin.literalura.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+public class Libro {
 
-import java.util.List;
+    private Integer id;
+    private String titulo;
+    private String resumen;
+    private String idioma;
+    private Autor autor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record Libro(
-        @JsonAlias("id") Integer id,
-        @JsonAlias("title") String titulo,
-        @JsonAlias("authors") List<Autor> autores,
-        @JsonAlias("summaries") List<String> resumenes,
-        @JsonAlias("languages") List<String> idiomas
-        ) {
+    public Libro(DatosLibro datosLibro) {
+        this.id = datosLibro.id();
+        this.titulo = datosLibro.titulo();
+        this.resumen = datosLibro.resumenes().get(0);
+        this.idioma = datosLibro.idiomas().get(0);
+        this.autor = new Autor(datosLibro.autores().get(0));
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer stringBuffer = new StringBuffer();
+
+        stringBuffer.append("Título: " + this.titulo +"\n");
+        stringBuffer.append("Autor: " + this.autor + "\n");
+        stringBuffer.append("Resumen: " + this.resumen + "\n");
+        stringBuffer.append("Idioma: " + this.idioma);
+
+        return stringBuffer.toString();
+    }
+
 }

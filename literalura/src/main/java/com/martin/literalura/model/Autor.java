@@ -1,12 +1,20 @@
 package com.martin.literalura.model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+public class Autor {
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public record Autor(
-        @JsonAlias("birth_year") Integer anioNacimiento,
-        @JsonAlias("death_year") Integer anioMuerte,
-        @JsonAlias("name") String nombre
-) {
+    private String nombre;
+    private Integer anioNacimiento;
+    private Integer anioMuerte;
+
+    public Autor(DatosAutor datosAutor) {
+        this.nombre = datosAutor.nombre();
+        this.anioNacimiento = datosAutor.anioNacimiento();
+        this.anioMuerte = datosAutor.anioMuerte();
+    }
+
+    @Override
+    public String toString() {
+        return this.nombre;
+    }
+
 }

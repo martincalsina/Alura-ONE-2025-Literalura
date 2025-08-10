@@ -10,6 +10,6 @@ public record PaginaDeLibros(
         @JsonAlias("count") Integer cantidad,
         @JsonAlias("next") String siguientePagina,
         @JsonAlias("previous") String anteriorPagina,
-        @JsonAlias("results") List<Libro> libros
+        @JsonAlias("results") List<DatosLibro> datosLibros
         ) {
 }
