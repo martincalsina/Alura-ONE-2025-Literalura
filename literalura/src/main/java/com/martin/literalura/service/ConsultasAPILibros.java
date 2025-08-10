@@ -31,8 +31,14 @@ public class ConsultasAPILibros {
         return response.body();
     }
 
-    public PaginaDeLibros getAllBooks() {
+    public PaginaDeLibros getAllBooksPage() {
         String rawJson = this.obtenerDatos(BASE_URL + "/books");
+        PaginaDeLibros paginaDeLibros = conversor.convertirDatos(rawJson, PaginaDeLibros.class);
+        return paginaDeLibros;
+    }
+
+    public PaginaDeLibros getBookPageByName(String name) {
+        String rawJson = this.obtenerDatos(BASE_URL + "/books?search=" + name.replace(" ", "%20"));
         PaginaDeLibros paginaDeLibros = conversor.convertirDatos(rawJson, PaginaDeLibros.class);
         return paginaDeLibros;
     }

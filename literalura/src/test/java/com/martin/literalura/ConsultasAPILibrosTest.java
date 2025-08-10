@@ -18,7 +18,7 @@ public class ConsultasAPILibrosTest {
     @Test
     void test01AllBooksRequestReturnsAPageOfBooks() {
 
-        PaginaDeLibros paginaDeLibros = consultasAPI.getAllBooks();
+        PaginaDeLibros paginaDeLibros = consultasAPI.getAllBooksPage();
 
         assertNotNull(paginaDeLibros);
         assertTrue(paginaDeLibros.cantidad() > 0, "La página de libros default no debe ser vacía");
@@ -31,7 +31,7 @@ public class ConsultasAPILibrosTest {
     @Test
     void test02AllBooksRequestListOfBooksReturnsBooks() {
 
-        PaginaDeLibros paginaDeLIbros = consultasAPI.getAllBooks();
+        PaginaDeLibros paginaDeLIbros = consultasAPI.getAllBooksPage();
         List<Libro> libros = paginaDeLIbros.libros();
         Libro libro = libros.get(0);
 
@@ -41,5 +41,36 @@ public class ConsultasAPILibrosTest {
         assertFalse(libro.resumenes().isEmpty(), "Un libro debe tener al menos un resumen");
 
     }
+
+    @Test
+    void test03BookByTitleRequestReturnsNoResultsWhenBookIsNotPresent() {
+
+        String notPresentBookTitle = "mkasdmak31";
+        PaginaDeLibros paginaDeLibros = consultasAPI.getBookPageByName(notPresentBookTitle);
+
+        assertNotNull(paginaDeLibros);
+        assertEquals(0, (int) paginaDeLibros.cantidad(), "Deberían haberse hallado 0 libros");
+        assertNull(paginaDeLibros.siguientePagina(), "No debería haber siguiente página");
+        assertNull(paginaDeLibros.anteriorPagina(), "No debería haber anterior página");
+        assertTrue(paginaDeLibros.libros().isEmpty(), "No debería haberse recibido ningún libro");
+
+    }
+
+    //como tal, la API usa ?search=smth para hallar coincidencias de palabras entre titulo y autor, no hace diferencia. Pero a mí sólo me importa título
+    @Test
+    void test04BookByTitleRequestReturnsBooksWhenIsPresent() {
+
+        String presentBookTitle = "Don Quijote";
+        PaginaDeLibros paginaDeLibros = consultasAPI.getBookPageByName(presentBookTitle);
+
+        assertNotNull(paginaDeLibros);
+        assertTrue(paginaDeLibros.cantidad() > 0, "Deberían haberse hallado al menos un libro");
+        assertNull(paginaDeLibros.anteriorPagina(), "No debería haber anterior página");
+        assertFalse(paginaDeLibros.libros().isEmpty(), "Debería haberse recibido al menos un libro");
+
+    }
+
+
+
 
 }
