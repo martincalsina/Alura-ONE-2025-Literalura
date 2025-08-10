@@ -1,15 +1,24 @@
 package com.martin.literalura.principal;
 
+import com.martin.literalura.model.Autor;
 import com.martin.literalura.model.DatosLibro;
 import com.martin.literalura.model.Libro;
 import com.martin.literalura.model.PaginaDeLibros;
+import com.martin.literalura.repository.AutorRepository;
+import com.martin.literalura.repository.LibroRepository;
 import com.martin.literalura.service.ConsultasAPILibros;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class MenuLibros {
 
-    private Set<Libro> librosRegistrados = new HashSet<>();
+    @Autowired
+    private LibroRepository libroRepository;
+    @Autowired
+    private AutorRepository autorRepository;
     private ConsultasAPILibros consultaAPI = new ConsultasAPILibros();
     private final String menuPrincipalOpciones = """
                     1 - Buscar libro por título.
@@ -78,17 +87,27 @@ public class MenuLibros {
             Libro libro = new Libro(datosLibro);
             System.out.println("Encontramos el siguiente libro:");
             System.out.println(libro);
-            if (!librosRegistrados.contains(libro)) {
-                System.out.println("Registrando libro");
-                this.librosRegistrados.add(libro);
+            this.registrar(libro);
+        }
+    }
+
+    private void registrar(Libro libro) {
+        if (!libroRepository.existsById(libro.getId())) {
+            if (!autorRepository.existsById(libro.getAutor().getNombre())) {
+                Autor autor = libro.getAutor();
+                System.out.println("Registrando autor...");
+                autorRepository.save(autor);
             }
+            System.out.println("Registrando libro...");
+            libroRepository.save(libro);
         }
     }
 
     private void listarLibrosRegistrados() {
+        List<Libro> librosRegistrados = this.libroRepository.findAll();
         System.out.println("Listando libros registrados");
         System.out.println("--------------------------------");
-        for(Libro libro: this.librosRegistrados) {
+        for(Libro libro: librosRegistrados) {
             System.out.println(libro);
         }
         System.out.println("--------------------------------");

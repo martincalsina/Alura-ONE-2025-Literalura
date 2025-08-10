@@ -1,12 +1,25 @@
 package com.martin.literalura.model;
 
+import jakarta.persistence.*;
+
+;
+
+@Entity
 public class Libro {
 
-    private Integer id;
+    @Id
+    private Long id;
     private String titulo;
+    @Lob
     private String resumen;
     private String idioma;
+    @ManyToOne
+    @JoinColumn(name = "nombre")
     private Autor autor;
+
+    public Libro() {
+
+    }
 
     public Libro(DatosLibro datosLibro) {
         this.id = datosLibro.id();
@@ -26,6 +39,14 @@ public class Libro {
         stringBuffer.append("Idioma: " + this.idioma);
 
         return stringBuffer.toString();
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public Autor getAutor() {
+        return this.autor;
     }
 
 }

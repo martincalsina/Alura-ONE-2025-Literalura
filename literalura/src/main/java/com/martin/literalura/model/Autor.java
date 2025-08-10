@@ -1,10 +1,24 @@
 package com.martin.literalura.model;
 
+
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
 public class Autor {
 
+    @Id
+    @Column(unique = true)
     private String nombre;
     private Integer anioNacimiento;
     private Integer anioMuerte;
+    @OneToMany(mappedBy = "autor", cascade=CascadeType.ALL)
+    private List<Libro> libros;
+
+    public Autor() {
+
+    }
 
     public Autor(DatosAutor datosAutor) {
         this.nombre = datosAutor.nombre();
@@ -14,6 +28,10 @@ public class Autor {
 
     @Override
     public String toString() {
+        return this.nombre;
+    }
+
+    public String getNombre() {
         return this.nombre;
     }
 
