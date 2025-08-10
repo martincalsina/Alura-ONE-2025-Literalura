@@ -45,6 +45,10 @@ public class Libro {
         return this.id;
     }
 
+    public String getTitulo() {
+        return this.titulo;
+    }
+
     public Autor getAutor() {
         return this.autor;
     }

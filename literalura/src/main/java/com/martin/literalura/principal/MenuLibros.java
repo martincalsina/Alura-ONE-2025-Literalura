@@ -66,6 +66,7 @@ public class MenuLibros {
                 this.listarLibrosRegistrados();
                 break;
             case 3:
+                this.listarAutoresRegistrados();
                 break;
             case 4:
                 break;
@@ -109,6 +110,22 @@ public class MenuLibros {
         System.out.println("--------------------------------");
         for(Libro libro: librosRegistrados) {
             System.out.println(libro);
+        }
+        System.out.println("--------------------------------");
+    }
+
+    private void listarAutoresRegistrados() {
+        List<Autor> autoresRegistrados = this.autorRepository.findAll();
+        System.out.println("Listando autores registrados");
+        System.out.println("--------------------------------");
+        for(Autor autor: autoresRegistrados) {
+            System.out.println(" ");
+            System.out.println("Autor: " + autor.getNombre());
+            System.out.println("Libros registrados: ");
+            for(Libro libro: autor.getLibros()) {
+                System.out.println("- " + libro.getTitulo());
+            }
+            System.out.println(" ");
         }
         System.out.println("--------------------------------");
     }

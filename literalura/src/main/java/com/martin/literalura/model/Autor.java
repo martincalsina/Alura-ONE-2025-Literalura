@@ -13,7 +13,7 @@ public class Autor {
     private String nombre;
     private Integer anioNacimiento;
     private Integer anioMuerte;
-    @OneToMany(mappedBy = "autor", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Libro> libros;
 
     public Autor() {
@@ -33,6 +33,10 @@ public class Autor {
 
     public String getNombre() {
         return this.nombre;
+    }
+
+    public List<Libro> getLibros() {
+        return this.libros;
     }
 
 }
