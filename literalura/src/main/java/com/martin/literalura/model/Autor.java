@@ -28,7 +28,15 @@ public class Autor {
 
     @Override
     public String toString() {
-        return this.nombre;
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("Nombre: " + this.nombre +"\n");
+        stringBuffer.append("Año de nacimiento: " + this.anioNacimiento+"\n");
+        stringBuffer.append("Año de muerte: " + this.anioMuerte+"\n");
+        stringBuffer.append("Libros registrados: "+"\n");
+        for (Libro libro: libros) {
+            stringBuffer.append(" - "+ libro.getTitulo() + "\n");
+        }
+        return stringBuffer.toString();
     }
 
     public String getNombre() {

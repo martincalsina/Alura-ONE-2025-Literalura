@@ -1,6 +1,7 @@
 package com.martin.literalura.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 
 ;
 
@@ -10,7 +11,7 @@ public class Libro {
     @Id
     private Long id;
     private String titulo;
-    @Lob
+    @Column(columnDefinition="TEXT")
     private String resumen;
     private String idioma;
     @ManyToOne
@@ -34,7 +35,7 @@ public class Libro {
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer.append("Título: " + this.titulo +"\n");
-        stringBuffer.append("Autor: " + this.autor + "\n");
+        stringBuffer.append("Autor: " + this.autor.getNombre() + "\n");
         stringBuffer.append("Resumen: " + this.resumen + "\n");
         stringBuffer.append("Idioma: " + this.idioma);
 

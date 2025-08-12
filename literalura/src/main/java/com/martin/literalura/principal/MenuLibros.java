@@ -7,6 +7,7 @@ import com.martin.literalura.model.PaginaDeLibros;
 import com.martin.literalura.repository.AutorRepository;
 import com.martin.literalura.repository.LibroRepository;
 import com.martin.literalura.service.ConsultasAPILibros;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class MenuLibros {
                 this.listarAutoresRegistrados();
                 break;
             case 4:
+                this.listarAutoresRegistradosVivos();
                 break;
             case 5:
                 break;
@@ -119,15 +121,37 @@ public class MenuLibros {
         System.out.println("Listando autores registrados");
         System.out.println("--------------------------------");
         for(Autor autor: autoresRegistrados) {
-            System.out.println(" ");
-            System.out.println("Autor: " + autor.getNombre());
-            System.out.println("Libros registrados: ");
-            for(Libro libro: autor.getLibros()) {
-                System.out.println("- " + libro.getTitulo());
-            }
-            System.out.println(" ");
+            System.out.println(autor);
         }
         System.out.println("--------------------------------");
+    }
+
+    private void listarAutoresRegistradosVivos() {
+        System.out.println("Ingrese el año correspondiente: ");
+        while (true) {
+            try {
+                Integer anio = Integer.valueOf(lectura.nextLine());
+                this.listarAutoresRegistradosVivosEn(anio);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Ingrese un valor entero:");
+            }
+        }
+    }
+
+    @Transactional
+    private void listarAutoresRegistradosVivosEn(Integer anio) {
+        List<Autor> autoresRegistradosVivosEnEseAnio = this.autorRepository.obtenerAutoresVivosEn(anio);
+        if (autoresRegistradosVivosEnEseAnio.isEmpty()) {
+            System.out.println("No se encontraron autores registrados vivos en ese año");
+        } else {
+            System.out.println("Listando autores encontrados");
+            System.out.println("--------------------------------");
+            for (Autor autor: autoresRegistradosVivosEnEseAnio) {
+                System.out.println(autor);
+            }
+            System.out.println("--------------------------------");
+        }
     }
 
 }
