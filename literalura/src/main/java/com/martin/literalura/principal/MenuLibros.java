@@ -73,8 +73,8 @@ public class MenuLibros {
                 this.listarAutoresRegistradosVivos();
                 break;
             case 5:
+                this.listarLibrosRegistradosPorIdioma();
                 break;
-
         }
     }
 
@@ -139,7 +139,6 @@ public class MenuLibros {
         }
     }
 
-    @Transactional
     private void listarAutoresRegistradosVivosEn(Integer anio) {
         List<Autor> autoresRegistradosVivosEnEseAnio = this.autorRepository.obtenerAutoresVivosEn(anio);
         if (autoresRegistradosVivosEnEseAnio.isEmpty()) {
@@ -151,6 +150,39 @@ public class MenuLibros {
                 System.out.println(autor);
             }
             System.out.println("--------------------------------");
+        }
+    }
+
+    private void listarLibrosRegistradosPorIdioma() {
+        List<String> idiomas = this.libroRepository.obtenerIdiomas();
+        if (idiomas.isEmpty()) {
+            System.out.println("Lo sentimos, no hay libros registrados para realizar esta operación");
+        } else {
+
+            while (true) {
+                System.out.println("Estos son los idiomas de los libros registrados:");
+                for (int i = 0; i < idiomas.size(); i++) {
+                    System.out.println(String.valueOf(i+1)+" - "+idiomas.get(i));
+                }
+                System.out.println("Ingrese el número correspondiente al idioma que elegirá:");
+                try {
+                    Integer idiomaElegidoIndex = Integer.valueOf(lectura.nextLine()) - 1;
+                    if (0 <= idiomaElegidoIndex && idiomaElegidoIndex < idiomas.size()) {
+                        String idiomaElegido = idiomas.get(idiomaElegidoIndex);
+                        List<Libro> libros = libroRepository.findByIdiomaEquals(idiomaElegido);
+                        System.out.println("Encontramos los siguientes libros con el idioma " + idiomaElegido);
+                        for (Libro libro: libros) {
+                            System.out.println(libro);
+                        }
+                        break;
+                    } else {
+                        System.out.println("Ingrese un valor de entre los presentados");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Ingrese un valor entero:");
+                }
+            }
+
         }
     }
 
